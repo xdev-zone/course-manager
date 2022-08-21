@@ -6,4 +6,4 @@ services:
     ports:
       - "80:5000"
     environment:
-      - DATABASE_URL=mysql+pymysql://coursemanager:course.manager1@course-manager-db1.mysql.database.azure.com/coursemanager
+      - DATABASE_URL=mysql+mysqlconnector://serveradmin:course.manager1@course-manager-db1.mysql.database.azure.com/coursemanager

@@ -130,5 +130,6 @@ dmypy.json
 
 # DOGE Ausschlüsse
 #/coursemanager/
-#/logs/
+/logs/
+.gitignore.bak
 #app.db

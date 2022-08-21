@@ -9,5 +9,5 @@ while true; do
     echo Deploy command failed, retrying in 5 secs...
     sleep 5
 done
-flask translate compile
+
 exec gunicorn -b :5000 --access-logfile - --error-logfile - course-manager:app

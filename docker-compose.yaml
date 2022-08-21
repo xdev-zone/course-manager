@@ -4,4 +4,4 @@ services:
     image: course-manager
     build: .
     ports:
-      - "8000:5000"
+      - "80:5000"

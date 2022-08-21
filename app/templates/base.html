@@ -1,0 +1,73 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <title>{% block title %}{% if title %}{{ title }} - Course Manager{% else %}Welcome to Course-Manager{% endif %}{% endblock %}</title>
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet"> 
+{% endblock %}
+
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('index') }}">Course-Manager</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% if not current_user.is_anonymous %}
+                    <li><a href="{{ url_for('courses') }}">Course explore</a></li>
+                        {% if current_user.registrated_courses().count() > 0 %}
+                        <li><a href="{{ url_for('registrated_courses') }}">Your Registrations</a></li>
+                        {% endif %}
+                        {% if current_user.courses.count() > 0 %}
+                        <li><a href="{{ url_for('instructed_courses') }}">Your Courses</a></li>
+                        {% endif %}
+                        {% if current_user.role == 'admin' %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                            <li><a href="{{ url_for('new_course') }}">New course</a></li>
+                            <li><a href="{{ url_for('manage_courses') }}">Manage courses</a></li>
+                            </ul>
+                        </li>                
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if current_user.is_anonymous %}
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    {% else %}
+                        {% if current_user.role == 'admin' %}
+                            <li><a>{{ current_user.role }}</a></li>
+                        {% endif %}
+                    <li><a href="{{ url_for('user', username=current_user.username) }}">Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container mgFlexBase">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info mgFlexFullWidth" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {# application content needs to be provided in the app_content block #}
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,73 @@
+    <div class="mgFlexItem">
+        <div class="avatar">
+            <img  src="{{ course.avatar(70) }}" />
+        </div>        
+        {% if course.visible == 0 %}
+            <div class="hinweis">invisible</div>
+        {% endif %}
+        <div class="title">{{ course.title }}</div>
+            <div class="text">{{ course.description }}</div>
+            <br>
+            <div class="litleTitle">Available seats</div>
+            <div class="text">{{ course.available_seats() }} / {{ course.seats }}</div>
+            <br>
+            <div class="litleTitle">Instructor</div>
+            <div class="text">
+                <a href="{{ url_for('user', username=course.instructor.username) }}">
+                    {{ course.instructor.username }}
+                </a>
+                {% if course.instructor_id == current_user.id %}
+                    (you)
+                {% endif %}
+            </div>
+            <br>
+            <div class="litleTitle">Date</div>
+            <div class="text">
+            {{ course.date }}
+            {% if current_user.role == "admin" or course.instructor_id == current_user.id %}
+            </div>
+            <br>
+            <div class="litleTitle">Attendees (only instructor and admins)</div>
+            <div class="text">
+                {% if course.registrated.count() == 0 %}
+                <div>-no-</div>
+                {% endif %}
+
+                {% for attendee in course.registrated %}
+                    <a href="{{ url_for('user', username=attendee.username) }}">
+                        {{ attendee.username }}
+                    </a>
+                    {% endfor %}
+                    {% else %}
+            {% endif %}
+            </div>
+        <div style="display: flex; flex-direction: row;">
+            {% if (request.url_rule.rule == "/manage_courses" or request.url_rule.rule == "/instructed_courses" ) and (current_user.role == "admin" or course.instructor_id == current_user.id) %}
+            <form action="{{ url_for('edit_course', id=course.id) }}" method="get" style="width:100%;">
+                {{ form.hidden_tag() }}
+                {{ form.submit(id='submit-btn', value='edit course', class_='btn btn-default', style='width:100%; margin-bottom: 6px;') }}
+            </form>
+            {% endif %}
+            {% if request.url_rule.rule == "/manage_courses" and current_user.role == "admin" %}
+            <form action="{{ url_for('delete_course', course_id=course.id) }}" method="post" style="width:100%;">
+                {{ form.hidden_tag() }}
+                {{ form.submit(id='submit-btn', value='delete course', class_='btn btn-default', style='width:100%; margin-bottom: 6px;') }}
+            </form>
+            {% endif %}
+            {% if course.is_registered(current_user) %}
+            <form action="{{ url_for('unregister_course', course_id=course.id) }}" method="post" style="width:100%;">
+                {{ form.hidden_tag() }}
+                {{ form.submit(value='Unregister', class_='btn btn-default', style='width:100%; margin-bottom: 6px;') }}
+            </form>
+            {% else %}
+            <form action="{{ url_for('register_course', course_id=course.id) }}" method="post" style="width:100%;">
+                {{ form.hidden_tag() }}
+                {% if course.available_seats() <= 0 or course.instructor_id == current_user.id %}
+                    {{ form.submit(value='Register', class_='btn btn-default', style='width:100%; margin-bottom: 6px;', disabled='true', title='there are no seats available or you are the instructor!') }}
+                {% else %}
+                    {{ form.submit(value='Register', class_='btn btn-default', style='width:100%; margin-bottom: 6px;') }}
+                {% endif %}
+           </form>
+            {% endif %}
+        </div>
+    </div>

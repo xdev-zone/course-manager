@@ -5,14 +5,3 @@ services:
     build: .
     ports:
       - "80:5000"
-  db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"

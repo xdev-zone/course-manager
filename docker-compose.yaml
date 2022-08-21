@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  app:
+    image: course-manager
+    build: .
+    ports:
+      - "8000:5000"

@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # DOGE Ausschlüsse
-/coursemanager/
-/logs/
-.app.db
+#/coursemanager/
+#/logs/
+#app.db

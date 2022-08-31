@@ -1,1 +1,1 @@
-FLASK_APP=course-manager.py
+FLASK_APP=app.py

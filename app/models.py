@@ -113,5 +113,29 @@ class Course(db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
 
+    def to_dict(self):
+        data = {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'seats': self.seats,
+            'available_seats': self.available_seats(),
+            'date': self.date,
+            'visible': self.visible,
+            'instructor_id': self.instructor_id,
+        }
+        return data
+
+    def from_dict(self, data):
+        for field in ['title', 'description', 'seats', 'date', 'visible', 'instructor_id']:
+            if field in data:
+                setattr(self, field, data[field])
+
+    @staticmethod
+    def to_collection():
+        courses = Course.query.all()
+        data = {'items': [item.to_dict() for item in courses]}
+        return data
+        
     def __repr__(self):
         return '<Course {}>'.format(self.id)

@@ -1,6 +1,6 @@
 from datetime import datetime
 from urllib import response
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from app import app, db
@@ -18,7 +18,7 @@ def admin_resource():
         flash('hey admin!')
         return redirect(url_for('index'))
     else:
-        flash('oh no!')
+        flash('You dont are an admin!')
         return redirect(url_for('index'))
 
 @app.before_request

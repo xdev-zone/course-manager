@@ -12,10 +12,10 @@ RUN venv/bin/pip install gunicorn pymysql cryptography
 
 COPY app app
 COPY migrations migrations
-COPY course-manager.py config.py boot.sh ./
+COPY app.py config.py boot.sh ./
 RUN chmod a+x boot.sh
 
-ENV FLASK_APP course-manager.py
+ENV FLASK_APP app.py
 
 RUN chown -R coursemanager:coursemanager ./
 USER coursemanager

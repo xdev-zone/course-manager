@@ -4,10 +4,4 @@ services:
     image: course-manager
     build: .
     ports:
-<<<<<<< Updated upstream
       - "80:5000"
-    environment:
-      - DATABASE_URL=mysql+mysqlconnector://serveradmin:<password>@course-manager-db1.mysql.database.azure.com/coursemanager
-=======
-      - "80:5000"
->>>>>>> Stashed changes
